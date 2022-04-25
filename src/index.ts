@@ -7,7 +7,7 @@ dotenv.config();
 
 const app = express();
 app.use(json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 // catch 404 and forward to error handler
 app.use(function (err: any, req: express.Request, res: express.Response, next: express.NextFunction) {

@@ -1,10 +1,11 @@
-import { Response, NextFunction } from 'express';
+import { Response, NextFunction, Request } from 'express';
 import jwt from 'jsonwebtoken';
 import { customerRepository } from '../db/repositories';
 import { IRequest } from '../interfaces/IRequest';
 
 export class Authenticator {
-  public static async authenticate(req: IRequest, res: Response, next: NextFunction) {
+  public static async authenticate(req: Request, res: Response, next: NextFunction) {
+    const request = <IRequest>req;
     const authHeader = req.headers.authorization;
     const token = authHeader?.split(' ')[1];
 
@@ -18,7 +19,7 @@ export class Authenticator {
       if (!customer) {
         return Authenticator.errorResponse(res, 'Invalid authorization token');
       }
-      req.customer = customer;
+      request.customer = customer;
       return next();
     } catch (error) {
       return Authenticator.errorResponse(res, 'Invalid authorization token');

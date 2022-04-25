@@ -7,7 +7,7 @@ export class AuthController {
   public static async register(req: Request, res: Response) {
     return ErrorHandler.handleAsyncRequestError(res, async () => {
       const customer = await CustomerService.createCustomer(req);
-      return res.json({ success: true, customer });
+      return res.status(201).json({ success: true, customer });
     });
   }
 

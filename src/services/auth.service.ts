@@ -13,7 +13,6 @@ export class AuthService {
   public static async authenticateUser(req: Request) {
     const { email, password } = req.body;
     const customer = await customerRepository.findOne({ where: { email }, relations: ['auth', 'profile'] });
-    console.log('AuthService ~ authenticateUser ~ customer', customer);
 
     if (customer && customer.auth.password === password) {
       customer.auth = <Auth>(<unknown>undefined);
