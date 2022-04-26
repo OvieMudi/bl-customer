@@ -1,10 +1,14 @@
-import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
+import 'reflect-metadata';
+import { Customer } from './entity/Customer';
+import { Auth } from './entity/Auth';
+import { Profile } from './entity/Profile';
+import { Account } from './entity/Account';
 
 dotenv.config();
 
-export const AppDataSource = new DataSource({
+const AppDataSource = new DataSource({
   type: 'postgres',
   host: process.env.DATABASE_HOST,
   port: Number(process.env.DATABASE_PORT),
@@ -13,18 +17,9 @@ export const AppDataSource = new DataSource({
   database: process.env.DATABASE_NAME,
   synchronize: process.env.NODE_ENV === 'development',
   logging: false,
-  entities: [`${__dirname}/entity/*.ts`],
+  entities: [Customer, Auth, Profile, Account],
   migrations: [`${__dirname}/migration/*.ts`],
   subscribers: [],
 });
 
-export const initializeDB = async () => {
-  try {
-    AppDataSource.initialize();
-    console.log('Connected to database')
-  } catch (error) {
-    console.log('Database connection error: ', error);
-  }
-};
-
-export const createTransaction = () => AppDataSource.manager.transaction;
+export default AppDataSource;
