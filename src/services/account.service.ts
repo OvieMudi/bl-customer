@@ -7,7 +7,7 @@ export class AccountService {
 
     const axios = AxiosUtil.createInstance(req.headers.authorization || '');
 
-    const response = await (await axios).post('/transactions', { amount });
+    const response = await axios.post('/transactions', { amount });
     console.log('AccountService ~ fundAccount ~ response', response.data);
 
     return response.data;

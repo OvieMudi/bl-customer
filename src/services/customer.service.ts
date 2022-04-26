@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { AppDataSource /* createTransaction */ } from '../db/dataSource';
+import AppDataSource from '../db/dataSource';
 import { Auth } from '../db/entity/Auth';
 import { Customer } from '../db/entity/Customer';
 import { Profile } from '../db/entity/Profile';
