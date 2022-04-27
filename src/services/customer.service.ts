@@ -4,6 +4,7 @@ import { Auth } from '../db/entity/Auth';
 import { Customer } from '../db/entity/Customer';
 import { Profile } from '../db/entity/Profile';
 import { customerRepository } from '../db/repositories';
+import { AccountService } from './account.service';
 import { AuthService } from './auth.service';
 import { ProfileService } from './profile.service';
 
@@ -18,7 +19,11 @@ export class CustomerService {
     await AppDataSource.manager.transaction(async (transactionEntityManager) => {
       await transactionEntityManager.save(auth);
       await transactionEntityManager.save(profile);
-      await transactionEntityManager.save(customer);
+      const createdCustomer = await transactionEntityManager.save(customer);
+      const accountObject = AccountService.createAccountObject(createdCustomer.id);
+      await transactionEntityManager.save(accountObject);
+      createdCustomer.account = accountObject;
+      await transactionEntityManager.save(createdCustomer);
     });
 
     customer.auth = <Auth>(<unknown>undefined);
@@ -30,7 +35,7 @@ export class CustomerService {
     return customers;
   }
 
-  public static createCustomerObject(customerData: { email: string; auth: Auth; profile: Profile }) {
+  public static createCustomerObject(customerData: { email: string; auth: Auth; profile: Profile; }) {
     const customer = new Customer();
     customer.email = customerData.email;
     customer.auth = customerData.auth;

@@ -11,4 +11,11 @@ export class AccountController {
       res.json({ success: true });
     });
   }
+
+  public static async completeFundingRequest(req: Request, res: Response) {
+    return ErrorHandler.handleAsyncRequestError(res, async () => {
+      await AccountService.completeFunding(<IRequest>req);
+      res.json({ success: true });
+    });
+  }
 }

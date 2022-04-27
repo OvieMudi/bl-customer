@@ -6,11 +6,11 @@ export class Account {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('uuid', { unique: true })
+  @Column('uuid')
   customerId: string;
 
   @Column('decimal')
-  balance: number;
+  balance: string;
 
   @CreateDateColumn({type: 'timestamptz'})
   createdAt: Date;
